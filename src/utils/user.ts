@@ -6,6 +6,7 @@ import BackendError from "./BackendError";
 import xssFilters from "xss-filters";
 import mongoose from "mongoose";
 import { signToken } from "./jwt";
+import { ez } from "express-zod-api";
 
 export const customZ = {
     objectId: () => z.custom<mongoose.Types.ObjectId | unknown>().or(z.string())
@@ -101,5 +102,5 @@ export const userMySchema = z.object({
     phone: z.string(),
     accountType: z.string(),
     admin: z.boolean(),
-    lastLogin: z.date().optional()
+    lastLogin: ez.dateOut().optional()
 })

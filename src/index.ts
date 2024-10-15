@@ -2,7 +2,6 @@ import './utils/env'
 import 'express-async-errors';
 
 import colors from 'colors';
-import http from 'http';
 import * as mongoose from 'mongoose';
 
 const mongoDbUri: string = (process.env.MONGODB_URI || 'mongodb://localhost/leadmagnet').trim()
@@ -27,7 +26,7 @@ try {
     process.exit(0)
 }
 
-let startMessage: string = `${colors.rainbow(`[Cluster ${process.pid}] `) + colors.green('online')} environment: ${colors.green(environment)}`
+let startMessage: string = `${colors.rainbow(`[Cluster ${process.pid}] `) + colors.green('online')} environment: ${colors.green(environment)} port: ${colors.green(config.server.listen.toString())}`
 startMessage += ' sentry: '
 
 if (environment === 'production' || environment === 'prod') {

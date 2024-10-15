@@ -1,4 +1,4 @@
-import { Routing } from "express-zod-api";
+import { ez, Routing } from "express-zod-api";
 import { authenticatedEndpointFactory } from "../config/passpost";
 import z, { custom } from "zod";
 import { FilterQuery, PopulateOptions } from "mongoose";
@@ -120,8 +120,8 @@ class AdminRouter {
             permission: z.nativeEnum(Permission),
             admin: z.boolean(),
             banned: z.boolean(),
-            createdAt: z.date(),
-            lastLogin: z.date().nullable(),
+            createdAt: ez.dateOut(),
+            lastLogin: ez.dateOut().optional(),
             courseStatus: z.any()
         }),
         handler: async ({ input: { id } }) => {

@@ -48,7 +48,6 @@ class CourseRouter {
             title: z.string(),
             description: z.string(),
             videos: z.any(),
-            survey: z.any(),
         }),
         handler: async ({ input: { id } }) => {
 
@@ -61,8 +60,7 @@ class CourseRouter {
             return {
                 title: course.title,
                 description: course.description,
-                videos: course.videos,
-                survey: course.survey
+                videos: course.videos
             }
         }
     })
