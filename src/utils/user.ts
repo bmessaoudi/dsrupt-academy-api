@@ -80,17 +80,14 @@ export const getAccountType = (user: UserI) => {
 
     const isSuperAdmin = user.isSuperAdmin()
     const isAdmin = user.isAdmin()
-    const isProspect = user.isProspect()
-    const isClient = user.isClient()
+    const isUser = user.isUser()
 
     if (isSuperAdmin) {
         accountType = 'superAdmin'
     } else if (isAdmin) {
         accountType = 'admin'
-    } else if (isProspect) {
-        accountType = 'prospect'
-    } else if (isClient) {
-        accountType = 'client'
+    } else if (isUser) {
+        accountType = 'user'
     }
 
     return accountType
@@ -104,9 +101,5 @@ export const userMySchema = z.object({
     phone: z.string(),
     accountType: z.string(),
     admin: z.boolean(),
-    questionsCompleted: z.boolean(),
-    introCompleted: z.boolean(),
-    theoryCompleted: z.boolean(),
-    practiceCompleted: z.boolean(),
-    emailVerified: z.boolean()
+    lastLogin: z.date().optional()
 })

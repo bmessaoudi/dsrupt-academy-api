@@ -9,7 +9,6 @@ class UserRouter {
     constructor() {
         this.routing = {
             my: this.my,
-            "complete-step": this.completeStep
         }
     }
 
@@ -28,42 +27,8 @@ class UserRouter {
                 phone: user.phone,
                 accountType: accountType,
                 admin: user.admin,
-                questionsCompleted: user.questionsCompleted,
-                introCompleted: user.introCompleted,
-                theoryCompleted: user.theoryCompleted,
-                practiceCompleted: user.practiceCompleted,
-                emailVerified: user.verification.verified
+                lastLogin: user.lastLogin,
             }
-        },
-        tags: ['user']
-    })
-
-    private completeStep = authenticatedEndpointFactory.build({
-        method: 'post',
-        input: z.object({
-            step: z.enum(['intro', 'theory', 'practice'])
-        }),
-        output: z.object({}),
-        handler: async ({ input: { step }, options: { user } }) => {
-
-            if (step === 'intro') {
-                user.introCompleted = true
-                user.introCompletedDate = new Date()
-            }
-
-            if (step === 'theory') {
-                user.theoryCompleted = true
-                user.theoryCompletedDate = new Date()
-            }
-
-            if (step === 'practice') {
-                user.practiceCompleted = true
-                user.practiceCompletedDate = new Date()
-            }
-
-            await user.save()
-
-            return {}
         },
         tags: ['user']
     })

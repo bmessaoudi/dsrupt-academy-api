@@ -39,11 +39,7 @@ class AutheticationRouter {
                 phone: user.phone,
                 accountType: accountType,
                 admin: user.admin,
-                questionsCompleted: user.questionsCompleted,
-                introCompleted: user.introCompleted,
-                theoryCompleted: user.theoryCompleted,
-                practiceCompleted: user.practiceCompleted,
-                emailVerified: user.verification.verified
+                lastLogin: user.lastLogin,
             }
         },
         tags: ['auth']
@@ -71,6 +67,9 @@ class AutheticationRouter {
             const { token } = loginUser(user, remember);
             const accountType = getAccountType(user)
 
+            user.lastLogin = new Date();
+            await user.save();
+
             return {
                 token,
                 name: user.name,
@@ -80,11 +79,7 @@ class AutheticationRouter {
                 phone: user.phone,
                 accountType,
                 admin: user.admin,
-                questionsCompleted: user.questionsCompleted,
-                introCompleted: user.introCompleted,
-                theoryCompleted: user.theoryCompleted,
-                practiceCompleted: user.practiceCompleted,
-                emailVerified: user.verification.verified
+                lastLogin: user.lastLogin,
             }
         },
         tags: ['auth']
@@ -129,11 +124,7 @@ class AutheticationRouter {
                 accountType,
                 _id: user._id,
                 admin: user.admin,
-                questionsCompleted: user.questionsCompleted,
-                introCompleted: user.introCompleted,
-                theoryCompleted: user.theoryCompleted,
-                practiceCompleted: user.practiceCompleted,
-                emailVerified: user.verification.verified
+                lastLogin: user.lastLogin,
             }
         },
         tags: ['auth']

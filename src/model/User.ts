@@ -2,9 +2,8 @@ import bcrypt from 'bcrypt'
 import mongoose, { ObjectId } from 'mongoose'
 
 import { Permission } from '../config/permissions'
-import { QuestionI } from './Question';
 
-export type AccountType = 'superAdmin' | 'admin' | 'client' | 'prospect';
+export type AccountType = 'superAdmin' | 'admin' | 'user';
 
 export interface UserSecurity {
     confirmed: string;
@@ -12,17 +11,6 @@ export interface UserSecurity {
     lastPasswordResend: number;
     lastEmailResend: number;
     firstValidToken: number;
-}
-
-export interface UserVerification {
-    verified: boolean;
-    code: string;
-    lastVerifyCode: Date;
-}
-
-export interface Answer {
-    question: QuestionI
-    answer: string
 }
 
 export interface UserI extends mongoose.Document {
@@ -36,17 +24,7 @@ export interface UserI extends mongoose.Document {
     permission: Permission;
     admin: boolean;
     banned: boolean;
-    verification: UserVerification;
-
-    questionsCompleted: boolean;
-    answers: Answer[]
-    questionsCompletedDate: Date;
-    introCompleted: boolean;
-    introCompletedDate: Date;
-    theoryCompleted: boolean;
-    theoryCompletedDate: Date;
-    practiceCompleted: boolean;
-    practiceCompletedDate: Date;
+    lastLogin: Date;
 
     createdAt: Date
 
@@ -79,24 +57,7 @@ const userSchema = new mongoose.Schema<UserI>(
         },
         admin: { type: Boolean, default: false },
         banned: { type: Boolean, default: false },
-        verification: {
-            verified: { type: Boolean, default: false },
-            code: { type: String },
-            lastVerifyCode: { type: Date },
-        },
-
-        questionsCompleted: { type: Boolean, default: false },
-        questionsCompletedDate: { type: Date },
-        answers: [{
-            question: { type: mongoose.Schema.Types.ObjectId, ref: 'Question', require: true },
-            answer: { type: String, require: true }
-        }],
-        introCompleted: { type: Boolean, default: false },
-        introCompletedDate: { type: Date },
-        theoryCompleted: { type: Boolean, default: false },
-        theoryCompletedDate: { type: Date },
-        practiceCompleted: { type: Boolean, default: false },
-        practiceCompletedDate: { type: Date },
+        lastLogin: { type: Date },
     },
     { timestamps: true }
 )

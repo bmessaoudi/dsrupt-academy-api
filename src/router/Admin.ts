@@ -8,6 +8,7 @@ import { PagedFind } from "../utils/pagination";
 import { adminEndPointFactory, Permission } from "../config/permissions";
 import { customZ } from "../utils/user";
 import BackendError from "../utils/BackendError";
+import CourseStatus from "../model/CourseStatus";
 
 class AdminRouter {
     routing: Routing;
@@ -119,31 +120,14 @@ class AdminRouter {
             permission: z.nativeEnum(Permission),
             admin: z.boolean(),
             banned: z.boolean(),
-            verification: z.object({
-                verified: z.boolean(),
-            }),
-            questionsCompleted: z.boolean(),
-            questionsCompletedDate: z.date().optional(),
-            answers: z.array(z.object({
-                question: z.object({
-                    _id: customZ.objectId(),
-                    title: z.string(),
-                    question: z.string(),
-                    answers: z.array(z.string()),
-                    type: z.enum(['single', 'multi', 'text']),
-                }),
-                answer: z.string(),
-            })),
-            introCompleted: z.boolean(),
-            introCompletedDate: z.date().optional(),
-            theoryCompleted: z.boolean(),
-            theoryCompletedDate: z.date().optional(),
-            practiceCompleted: z.boolean(),
-            practiceCompletedDate: z.date().optional(),
             createdAt: z.date(),
+            lastLogin: z.date().nullable(),
+            courseStatus: z.any()
         }),
         handler: async ({ input: { id } }) => {
             const user = await User.findById(id).populate(['answers.question', 'telegramUser'])
+
+            const status = await CourseStatus.find({ user: id }).populate('course')
 
             if (!user) {
                 throw BackendError('Invalid')
@@ -159,19 +143,9 @@ class AdminRouter {
                 permission: user.permission,
                 admin: user.admin,
                 banned: user.banned,
-                verification: {
-                    verified: user.verification.verified,
-                },
-                questionsCompleted: user.questionsCompleted,
-                questionsCompletedDate: user.questionsCompletedDate,
-                answers: user.answers,
-                introCompleted: user.introCompleted,
-                introCompletedDate: user.introCompletedDate,
-                theoryCompleted: user.theoryCompleted,
-                theoryCompletedDate: user.theoryCompletedDate,
-                practiceCompleted: user.practiceCompleted,
-                practiceCompletedDate: user.practiceCompletedDate,
+                lastLogin: user.lastLogin,
                 createdAt: user.createdAt,
+                courseStatus: status
             }
         },
         tags: ['admin']
