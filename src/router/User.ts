@@ -99,7 +99,7 @@ class UserRouter {
                 throw BackendError("WrongPassword");
             }
 
-            user.password = oldPassword
+            user.password = newPassword
 
             await user.save()
 
