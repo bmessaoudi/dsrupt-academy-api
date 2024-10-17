@@ -22,6 +22,7 @@ export type ValidErrors =
     | 'InvalidCode'
     | 'CodeExpired'
     | 'TooMuchCodeRequest'
+    | 'EmailAlreadyRegistered'
 
 
 const ValidErrorsMsg: {
@@ -47,7 +48,8 @@ const ValidErrorsMsg: {
     'WrongPassword': { message: 'Wrong Password' },
     'InvalidCode': { message: 'Invalid Code' },
     'CodeExpired': { message: 'CodeExpired' },
-    'TooMuchCodeRequest': { message: 'TooMuchCodeRequest' }
+    'TooMuchCodeRequest': { message: 'TooMuchCodeRequest' },
+    'EmailAlreadyRegistered': { message: 'EmailAlreadyRegistered' }
 }
 
 
