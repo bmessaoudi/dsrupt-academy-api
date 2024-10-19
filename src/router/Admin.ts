@@ -122,6 +122,7 @@ class AdminRouter {
             banned: z.boolean(),
             createdAt: ez.dateOut(),
             lastLogin: ez.dateOut().optional(),
+            marketingConsense: z.boolean(),
             courseStatus: z.any()
         }),
         handler: async ({ input: { id } }) => {
@@ -145,6 +146,7 @@ class AdminRouter {
                 banned: user.banned,
                 lastLogin: user.lastLogin,
                 createdAt: user.createdAt,
+                marketingConsense: user.marketingConsense,
                 courseStatus: status
             }
         },

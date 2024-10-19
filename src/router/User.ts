@@ -34,6 +34,7 @@ class UserRouter {
                 accountType: accountType,
                 admin: user.admin,
                 lastLogin: user.lastLogin,
+                marketingConsense: user.marketingConsense
             }
         },
         tags: ['user']
@@ -77,6 +78,7 @@ class UserRouter {
                 accountType: accountType,
                 admin: user.admin,
                 lastLogin: user.lastLogin,
+                marketingConsense: user.marketingConsense
             }
         },
         tags: ['user']

@@ -37,6 +37,7 @@ type RegisterUserProps = {
     phone: string,
     admin: boolean,
     permission: Permission
+    marketingConsense: boolean,
 }
 
 export async function registerUser({
@@ -46,7 +47,8 @@ export async function registerUser({
     password,
     phone,
     admin,
-    permission
+    permission,
+    marketingConsense,
 }: RegisterUserProps) {
     const user = new User();
 
@@ -57,6 +59,10 @@ export async function registerUser({
     user.admin = admin
     user.permission = permission
     user.phone = phone
+
+    user.tos = true
+    user.tosDate = new Date()
+    user.marketingConsense = marketingConsense
 
     user.security.pendingPassword = "";
     user.security.lastEmailResend = 0;
@@ -102,5 +108,6 @@ export const userMySchema = z.object({
     phone: z.string(),
     accountType: z.string(),
     admin: z.boolean(),
-    lastLogin: ez.dateOut().optional()
+    lastLogin: ez.dateOut().optional(),
+    marketingConsense: z.boolean(),
 })

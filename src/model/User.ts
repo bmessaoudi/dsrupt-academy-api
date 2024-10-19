@@ -25,6 +25,9 @@ export interface UserI extends mongoose.Document {
     admin: boolean;
     banned: boolean;
     lastLogin: Date;
+    tos: boolean;
+    tosDate: Date;
+    marketingConsense: boolean;
 
     createdAt: Date
 
@@ -58,6 +61,9 @@ const userSchema = new mongoose.Schema<UserI>(
         admin: { type: Boolean, default: false },
         banned: { type: Boolean, default: false },
         lastLogin: { type: Date },
+        tos: { type: Boolean, required: true },
+        tosDate: { type: Date },
+        marketingConsense: { type: Boolean, default: false }
     },
     { timestamps: true }
 )

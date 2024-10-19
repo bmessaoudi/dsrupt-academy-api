@@ -40,6 +40,7 @@ class AutheticationRouter {
                 accountType: accountType,
                 admin: user.admin,
                 lastLogin: user.lastLogin,
+                marketingConsense: user.marketingConsense
             }
         },
         tags: ['auth']
@@ -80,6 +81,7 @@ class AutheticationRouter {
                 accountType,
                 admin: user.admin,
                 lastLogin: user.lastLogin,
+                marketingConsense: user.marketingConsense
             }
         },
         tags: ['auth']
@@ -94,9 +96,10 @@ class AutheticationRouter {
             phone: z.string(),
             password: z.string(),
             passwordConfirm: z.string(),
+            marketingConsense: z.boolean(),
         }),
         output: userMySchema.merge(z.object({ token: z.string() })),
-        handler: async ({ input: { email, name, surname, phone, password, passwordConfirm } }) => {
+        handler: async ({ input: { email, name, surname, phone, password, passwordConfirm, marketingConsense } }) => {
             if (password !== passwordConfirm) {
                 throw BackendError("PasswordsNotMatching");
             }
@@ -107,7 +110,7 @@ class AutheticationRouter {
                 throw BackendError('AlreadyRegistered')
             }
 
-            const user = await registerUser({ email, name, surname, phone, password, admin: false, permission: Permission.User })
+            const user = await registerUser({ email, name, surname, phone, password, admin: false, permission: Permission.User, marketingConsense })
 
             await user.save();
 
@@ -125,6 +128,7 @@ class AutheticationRouter {
                 _id: user._id,
                 admin: user.admin,
                 lastLogin: user.lastLogin,
+                marketingConsense: user.marketingConsense
             }
         },
         tags: ['auth']
