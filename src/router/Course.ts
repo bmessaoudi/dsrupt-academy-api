@@ -11,15 +11,14 @@ class CourseRouter {
 
     constructor() {
         this.routing = {
-            all: this.listAll,
-            course: {
-                ':id': {
-                    '': this.getCourse,
-                    'status': this.getCourseStatus,
-                    'start': this.startCourse,
-                    'update-status': this.updateStatus
-                }
-            },
+            list: this.listAll,
+            'list-status': this.listAllStatus,
+            'start': this.startCourse,
+            'update-status': this.updateStatus,
+            ':id': {
+                '': this.getCourse,
+                'status': this.getCourseStatus,
+            }
         }
     }
 
@@ -35,6 +34,22 @@ class CourseRouter {
 
             return {
                 courses
+            }
+        }
+    })
+
+    private listAllStatus = authenticatedEndpointFactory.build({
+        method: 'get',
+        input: z.object({}),
+        output: z.object({
+            status: z.any().array()
+        }),
+        handler: async ({ options: { user } }) => {
+
+            const status = await CourseStatus.find({ user }).populate(['course'])
+
+            return {
+                status
             }
         }
     })
@@ -103,11 +118,15 @@ class CourseRouter {
                 throw BackendError('Invalid')
             }
 
-            const status = new CourseStatus()
-            status.user = user
-            status.course = course
+            const courseStatus = await CourseStatus.findOne({ user, course })
 
-            await status.save()
+            if (!courseStatus) {
+                const status = new CourseStatus()
+                status.user = user
+                status.course = course
+
+                await status.save()
+            }
 
             return {}
         }
