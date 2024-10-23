@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import { UserI } from './User'
-import { SurveyI } from './Survey'
+import User, { UserI } from './User'
+import Survey, { SurveyI } from './Survey'
 
 export interface AnswerI extends mongoose.Document {
     user: UserI,
@@ -10,8 +10,8 @@ export interface AnswerI extends mongoose.Document {
 
 const answerSchema = new mongoose.Schema<AnswerI>(
     {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
-        survey: { type: mongoose.Schema.Types.ObjectId, ref: 'Survey', require: true },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: User, require: true },
+        survey: { type: mongoose.Schema.Types.ObjectId, ref: Survey, require: true },
         answers: [{ type: String },]
     },
 )

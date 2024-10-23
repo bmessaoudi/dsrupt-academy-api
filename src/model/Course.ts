@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
-import { SurveyI } from './Survey'
-import { VideoI } from './Video'
+import Video, { VideoI } from './Video'
 
 export interface CourseI extends mongoose.Document {
     title: string,
@@ -12,7 +11,7 @@ const courseSchema = new mongoose.Schema<CourseI>(
     {
         title: { type: String, require: true },
         description: { type: String, require: true },
-        videos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video', require: true }],
+        videos: [{ type: mongoose.Schema.Types.ObjectId, ref: Video, require: true }],
     },
 )
 

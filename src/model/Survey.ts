@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { QuestionI } from './Question'
+import Question, { QuestionI } from './Question'
 
 export interface SurveyI extends mongoose.Document {
     title: string,
@@ -11,7 +11,7 @@ const surveySchema = new mongoose.Schema<SurveyI>(
     {
         title: { type: String, require: true },
         description: { type: String, require: true },
-        questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question', require: true }],
+        questions: [{ type: mongoose.Schema.Types.ObjectId, ref: Question, require: true }],
     },
 )
 

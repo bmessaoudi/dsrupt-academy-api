@@ -5,6 +5,7 @@ import { customZ } from "../utils/user";
 import Course from "../model/Course";
 import BackendError from "../utils/BackendError";
 import CourseStatus from "../model/CourseStatus";
+import Video from "../model/Video";
 
 class CourseRouter {
     routing: Routing;
@@ -15,6 +16,9 @@ class CourseRouter {
             'list-status': this.listAllStatus,
             'start': this.startCourse,
             'update-status': this.updateStatus,
+            'video': {
+                ':id': this.getVideo,
+            },
             ':id': {
                 '': this.getCourse,
                 'status': this.getCourseStatus,
@@ -66,7 +70,7 @@ class CourseRouter {
         }),
         handler: async ({ input: { id } }) => {
 
-            const course = await Course.findById(id).populate(['videos', 'survey'])
+            const course = await Course.findById(id).populate([{ path: 'videos', select: { title: 1, description: 1 } }])
 
             if (!course) {
                 throw BackendError('Invalid')
@@ -166,6 +170,32 @@ class CourseRouter {
             await status.save()
 
             return {}
+        }
+    })
+
+    private getVideo = authenticatedEndpointFactory.build({
+        method: 'get',
+        input: z.object({
+            id: customZ.objectId()
+        }),
+        output: z.object({
+            title: z.string(),
+            description: z.string(),
+            src: z.string(),
+        }),
+        handler: async ({ input: { id } }) => {
+
+            const video = await Video.findById(id)
+
+            if (!video) {
+                throw BackendError('Invalid')
+            }
+
+            return {
+                title: video.title,
+                description: video.description,
+                src: video.src
+            }
         }
     })
 
