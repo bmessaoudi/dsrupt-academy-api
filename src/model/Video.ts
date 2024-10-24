@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 export interface VideoI extends mongoose.Document {
+    module: string,
     title: string,
     description?: string,
     src: string,
@@ -8,6 +9,7 @@ export interface VideoI extends mongoose.Document {
 
 const videoSchema = new mongoose.Schema<VideoI>(
     {
+        module: { type: String, require: true },
         title: { type: String, require: true },
         description: { type: String, require: true },
         src: { type: String, require: true }
