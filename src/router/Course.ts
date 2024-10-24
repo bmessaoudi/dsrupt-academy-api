@@ -66,11 +66,14 @@ class CourseRouter {
         output: z.object({
             title: z.string(),
             description: z.string(),
-            videos: z.any(),
+            modules: z.object({
+                title: z.string(),
+                videos: z.any()
+            }).array(),
         }),
         handler: async ({ input: { id } }) => {
 
-            const course = await Course.findById(id).populate([{ path: 'videos', select: { title: 1, description: 1 } }])
+            const course = await Course.findById(id).populate([{ path: 'modules.videos', select: 'title' }])
 
             if (!course) {
                 throw BackendError('Invalid')
@@ -79,7 +82,7 @@ class CourseRouter {
             return {
                 title: course.title,
                 description: course.description,
-                videos: course.videos
+                modules: course.modules
             }
         }
     })
@@ -180,7 +183,7 @@ class CourseRouter {
         }),
         output: z.object({
             title: z.string(),
-            description: z.string(),
+            description: z.string().optional(),
             src: z.string(),
         }),
         handler: async ({ input: { id } }) => {

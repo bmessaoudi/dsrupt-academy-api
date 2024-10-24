@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 export interface VideoI extends mongoose.Document {
     title: string,
-    description: string,
+    description?: string,
     src: string,
 }
 
